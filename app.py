@@ -4,8 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from flask import Flask, render_template, request, jsonify
 
-app = Flask(__name__)
-
+app = Flask(__name__, template_folder='.')
 # Load Firebase credentials from environment variables
 firebase_credentials = json.loads(os.getenv("FIREBASE_CREDENTIALS"))
 cred = credentials.Certificate(firebase_credentials)
