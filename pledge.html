@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSS Pledge Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-lg font-bold mb-4 text-center">Take the Pledge</h2>
+        <form id="pledgeForm" class="space-y-3" onsubmit="return validateForm(event)">
+            <input type="text" id="name" placeholder="Full Name" class="w-full p-2 border rounded" required>
+            <input type="text" id="mobile" placeholder="Mobile Number" class="w-full p-2 border rounded" required>
+            <input type="email" id="email" placeholder="Email ID" class="w-full p-2 border rounded" required>
+            <select id="district" class="w-full p-2 border rounded" required>
+                <option value="" disabled selected>Select District</option>
+                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                <option value="Kollam">Kollam</option>
+                <option value="Pathanamthitta">Pathanamthitta</option>
+                <option value="Alappuzha">Alappuzha</option>
+                <option value="Kottayam">Kottayam</option>
+                <option value="Idukki">Idukki</option>
+                <option value="Ernakulam">Ernakulam</option>
+                <option value="Thrissur">Thrissur</option>
+                <option value="Palakkad">Palakkad</option>
+                <option value="Malappuram">Malappuram</option>
+                <option value="Kozhikode">Kozhikode</option>
+                <option value="Wayanad">Wayanad</option>
+                <option value="Kannur">Kannur</option>
+                <option value="Kasaragod">Kasaragod</option>
+            </select>
+            <input type="text" id="college" placeholder="College Name" class="w-full p-2 border rounded" required>
+            <input type="text" id="branch" placeholder="Branch" class="w-full p-2 border rounded" required>
+            <input type="text" id="semester" placeholder="Semester" class="w-full p-2 border rounded" required>
+            
+            <h3 class="text-md font-semibold">Drug Awareness & Commitment</h3>
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" id="q1" class="form-checkbox" required>
+                <span>I pledge to stay away from drugs and promote a drug-free environment.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" id="q2" class="form-checkbox" required>
+                <span>I will educate others about the harmful effects of drugs.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" id="q3" class="form-checkbox" required>
+                <span>I will support individuals struggling with addiction to seek help.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" id="q4" class="form-checkbox" required>
+                <span>I will participate in awareness campaigns against drug abuse.</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" id="q5" class="form-checkbox" required>
+                <span>I will make healthy choices and encourage others to do the same.</span>
+            </label>
+            
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Generate Certificate</button>
+        </form>
+    </div>
+
+    <div id="successPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+            <h2 class="text-lg font-bold mb-2">Success!</h2>
+            <p>Your pledge has been submitted successfully.</p>
+            <button onclick="closePopup()" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg">OK</button>
+        </div>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            const checkboxes = document.querySelectorAll("input[type='checkbox']");
+            let checked = false;
+            checkboxes.forEach(box => { if (box.checked) checked = true; });
+            if (!checked) {
+                alert("Please check all the pledge commitments.");
+                return false;
+            }
+            submitPledge();
+        }
+
+        async function submitPledge() {
+            const data = {
+                name: document.getElementById('name').value,
+                mobile: document.getElementById('mobile').value,
+                email: document.getElementById('email').value,
+                district: document.getElementById('district').value,
+                college: document.getElementById('college').value,
+                branch: document.getElementById('branch').value,
+                semester: document.getElementById('semester').value
+            };
+
+            await fetch('/submit_pledge', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            document.getElementById('successPopup').classList.remove('hidden');
+        }
+
+        function closePopup() {
+            document.getElementById('successPopup').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
