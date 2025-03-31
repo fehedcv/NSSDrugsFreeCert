@@ -7,9 +7,9 @@ from PIL import Image, ImageDraw, ImageFont
 import uuid
 
 app = Flask(__name__)
-cred = credentials.Certificate("cred.json")
+firebase_credentials = json.loads(os.getenv("FIREBASE_CREDENTIALS"))
+cred = credentials.Certificate(firebase_credentials)
 firebase_admin.initialize_app(cred)
-
 # Firestore database instance
 db = firestore.client()
 
