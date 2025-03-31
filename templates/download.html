@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Download</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <h2 class="text-lg font-bold mb-4">Download Your Certificate</h2>
+        <p class="mb-4 text-gray-600">Enter your Phone Number to download your certificate.</p>
+        <form id="downloadForm" onsubmit="return validateAndDownload(event)">
+            <label for="phoneNumber" class="sr-only">Phone Number</label>
+            <input 
+                type="text" 
+                id="phoneNumber" 
+                name="phoneNumber"
+                placeholder="Phone Number" 
+                class="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                required 
+            >
+            <button 
+                type="submit" 
+                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-all duration-300">
+                Download Certificate
+            </button>
+        </form>
+        <div id="errorMessage" class="hidden mt-4 text-red-500 font-semibold"></div>
+    </div>
+
+    <script>
+        function validateAndDownload(event) {
+            event.preventDefault();
+            
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            // Reset the error message visibility
+            errorMessage.classList.add("hidden");
+
+            // Improved phone number validation with a regex
+            const phoneRegex = /^\d{10}$/; // Example: expects exactly 10 digits
+            if (!phoneRegex.test(phoneNumber)) {
+                errorMessage.textContent = "Invalid phone number. Please enter a valid 10-digit phone number.";
+                errorMessage.classList.remove("hidden");
+                return false;
+            }
+
+            // Redirect to certificate download (mock functionality)
+            window.location.href = `/download/certificate?PhoneNumber=${encodeURIComponent(phoneNumber)}`;
+        }
+    </script>
+</body>
+</html>
