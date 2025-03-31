@@ -15,7 +15,7 @@ db = firestore.client()
 
 @app.route('/')
 def index():
-    return render_template('templates/index.html')  # Landing page with "Take Pledge" button
+    return render_template('index.html')  # Landing page with "Take Pledge" button
 
 @app.route('/pledge')
 def pledge_form():
