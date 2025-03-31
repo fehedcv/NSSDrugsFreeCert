@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Pledge Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4A90E2;
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #4A90E2;
+            border-color: #4A90E2;
+        }
+        input[type="checkbox"]:checked::after {
+            content: '\2713';
+            font-size: 16px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
     <div class="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -60,6 +85,12 @@
         </form>
     </div>
 
+    <div id="loadingScreen" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+            <img src="/static/loading.gif" alt="Loading...">
+        </div>
+    </div>
+
     <div id="successPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
         <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
             <h2 class="text-lg font-bold mb-2">Success!</h2>
@@ -71,11 +102,13 @@
     <script>
         function validateForm(event) {
             event.preventDefault();
+            document.getElementById('loadingScreen').classList.remove('hidden');
             const checkboxes = document.querySelectorAll("input[type='checkbox']");
             let checked = false;
             checkboxes.forEach(box => { if (box.checked) checked = true; });
             if (!checked) {
                 alert("Please check all the pledge commitments.");
+                document.getElementById('loadingScreen').classList.add('hidden');
                 return false;
             }
             submitPledge();
@@ -98,6 +131,7 @@
                 body: JSON.stringify(data),
             });
 
+            document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('successPopup').classList.remove('hidden');
         }
 
